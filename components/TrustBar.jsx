@@ -1,27 +1,22 @@
-const stats = [
-  { value: "2–4 wks", label: "From kickoff to live" },
-  { value: "100%", label: "Custom-built for you" },
-  { value: "ROI-led", label: "Measured on outcomes" },
-  { value: "Hands-on", label: "Direct, senior partnership" },
-];
+import { Check } from "./icons";
+
+/* Honest, factual reassurance — not fake testimonials. The working demo above
+   is the real proof; this just answers the instant objections. */
+const points = ["Built for HVAC", "No website changes", "Live in days", "You keep every lead"];
 
 export default function TrustBar() {
   return (
-    <section className="bg-[var(--surface)] border-b border-[var(--line)]">
-      <div className="max-w-7xl mx-auto site-gutter py-9 sm:py-11">
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-[var(--line)]">
-          {stats.map((stat) => (
-            <div key={stat.label} className="px-0 md:px-8 py-4 md:py-0 first:md:pl-0">
-              <p className="font-display text-2xl sm:text-3xl font-bold accent-text tracking-tight">
-                {stat.value}
-              </p>
-              <p className="mt-1 text-xs sm:text-sm font-sans text-[var(--text-soft)] leading-snug">
-                {stat.label}
-              </p>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
+    <div className="relative z-10 max-w-3xl mx-auto site-gutter pt-10 sm:pt-12">
+      <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2.5">
+        {points.map((p) => (
+          <li key={p} className="flex items-center gap-1.5 text-xs sm:text-sm font-sans font-medium text-[var(--invert-soft)]">
+            <span className="text-[var(--amber)]">
+              <Check size={15} />
+            </span>
+            {p}
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }

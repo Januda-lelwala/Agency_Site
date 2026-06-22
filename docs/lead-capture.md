@@ -1,6 +1,6 @@
-# Contact form — setup
+# Demo-request form — setup
 
-The contact form (`/contact`) posts to `app/api/contact/route.js`, which fans
+The booking form in the final CTA posts to `app/api/lead/route.js`, which fans
 the submission out to three independent channels:
 
 | Channel | Purpose | Required env vars |
@@ -29,8 +29,9 @@ Copy `.env.example` to `.env.local` and fill in the values.
      name        text not null,
      email       text not null,
      company     text,
+     phone       text,
      message     text,
-     source      text default 'website-contact'
+     source      text default 'nightshift-demo-request'
    );
 
    -- Lock the table down. Our API uses the service-role key, which bypasses
@@ -50,7 +51,7 @@ Copy `.env.example` to `.env.local` and fill in the values.
    domain** (Domains → Add Domain → add the DNS records).
 2. Create an API key → `RESEND_API_KEY`.
 3. Set `CONTACT_FROM_EMAIL` to an address on your verified domain, e.g.
-   `"Northbound AI <hello@yourdomain.com>"`, and `CONTACT_TO_EMAIL` to wherever
+   `"Nightshift <hello@yourdomain.com>"`, and `CONTACT_TO_EMAIL` to wherever
    you want lead notifications delivered.
 
 > Until your domain is verified you can test with `onboarding@resend.dev` as the
@@ -79,3 +80,10 @@ hCaptcha to the form and verify the token in the API route.
 
 When sales picks up, add a fourth channel in `route.js` that pushes the lead
 into HubSpot/Pipedrive — the pattern is identical to the Discord webhook.
+
+## Note: this is the form path, not the bot
+
+This captures leads from the **booking form**. The chat widget on the page is
+still a scripted preview — once you wire in your real bot backend (Supabase
+pgvector + Claude + a `book_appointment` tool), it can write leads to the same
+`leads` table and call the same channels.

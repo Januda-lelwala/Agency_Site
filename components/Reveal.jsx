@@ -3,16 +3,11 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Wraps children in a scroll-triggered reveal animation.
- * `variant` chooses the entrance direction: "up" | "left" | "right".
+ * Wraps children in a single, restrained scroll-triggered fade/rise.
+ * Used sparingly — over-animation reads as AI-generated; restraint reads
+ * as competence. Respects prefers-reduced-motion via globals.css.
  */
-export default function Reveal({
-  children,
-  variant = "up",
-  delay = 0,
-  className = "",
-  as: Tag = "div",
-}) {
+export default function Reveal({ children, delay = 0, className = "", as: Tag = "div" }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
@@ -27,20 +22,17 @@ export default function Reveal({
           observer.disconnect();
         }
       },
-      { threshold: 0.12 }
+      { threshold: 0.15 }
     );
 
     observer.observe(node);
     return () => observer.disconnect();
   }, []);
 
-  const base =
-    variant === "left" ? "reveal-left" : variant === "right" ? "reveal-right" : "reveal";
-
   return (
     <Tag
       ref={ref}
-      className={`${base} ${visible ? "visible" : ""} ${className}`}
+      className={`reveal ${visible ? "visible" : ""} ${className}`}
       style={delay ? { transitionDelay: `${delay}ms` } : undefined}
     >
       {children}

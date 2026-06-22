@@ -1,60 +1,44 @@
 import Link from "next/link";
-
-const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/services", label: "Services" },
-  { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
-];
+import { Moon } from "./icons";
 
 export default function Footer() {
   return (
-    <footer className="bg-[var(--ink)] text-white">
-      <div className="max-w-7xl mx-auto site-gutter py-12 sm:py-14 flex flex-col sm:flex-row items-center justify-between gap-8">
-        <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
-          <span className="flex h-9 w-9 items-center justify-center rounded-lg grad-accent text-white font-display font-bold text-base">
-            N
+    <footer className="bg-[var(--ink-3)] text-[var(--invert-soft)] border-t border-[var(--ink-line)]">
+      <div className="max-w-3xl mx-auto site-gutter py-12 flex flex-col items-center text-center gap-5">
+        <Link href="/" className="flex items-center gap-2.5" aria-label="Nightshift home">
+          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--amber)] text-[#1a0e02]">
+            <Moon size={16} />
           </span>
-          <span className="font-display font-bold text-white text-lg tracking-tight">
-            Northbound<span className="accent-text">.ai</span>
+          <span className="font-display font-extrabold text-[var(--invert)] text-lg tracking-tight">
+            Nightshift
           </span>
         </Link>
 
-        <nav aria-label="Footer navigation">
-          <ul className="flex flex-wrap justify-center gap-6 text-sm font-sans text-white/55">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <Link href={link.href} className="hover:text-white transition-colors">
-                  {link.label}
-                </Link>
-              </li>
-            ))}
-            <li>
-              <a
-                href="https://www.linkedin.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white transition-colors"
-              >
-                LinkedIn
-              </a>
-            </li>
-          </ul>
-        </nav>
+        {/* A real business name, physical address and contact email are required
+            for CAN-SPAM-compliant cold email. Replace the placeholders below. */}
+        <address className="not-italic text-sm font-sans leading-relaxed">
+          Nightshift Automation LLC
+          <br />
+          123 Main Street, Suite 200, Austin, TX 78701
+          <br />
+          <a href="mailto:hello@nightshift.example.com" className="hover:text-[var(--invert)] transition-colors">
+            hello@nightshift.example.com
+          </a>
+        </address>
 
-        <div className="flex flex-col items-center sm:items-end gap-1.5">
-          <div className="flex gap-4 text-xs font-sans text-white/40">
-            <Link href="/privacy" className="hover:text-white/80 transition-colors">
-              Privacy
-            </Link>
-            <Link href="/terms" className="hover:text-white/80 transition-colors">
-              Terms
-            </Link>
-          </div>
-          <p className="text-xs font-sans text-white/40">
-            © {new Date().getFullYear()} Northbound AI. All rights reserved.
-          </p>
+        <div className="flex items-center gap-5 text-xs font-sans">
+          <Link href="/privacy" className="hover:text-[var(--invert)] transition-colors">
+            Privacy Policy
+          </Link>
+          <span aria-hidden="true">·</span>
+          <a href="#book" className="hover:text-[var(--invert)] transition-colors">
+            Book a demo
+          </a>
         </div>
+
+        <p className="text-xs font-sans text-[var(--invert-soft)]/70">
+          © {new Date().getFullYear()} Nightshift Automation LLC. All rights reserved.
+        </p>
       </div>
     </footer>
   );
