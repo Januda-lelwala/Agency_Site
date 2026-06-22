@@ -1,4 +1,4 @@
-import { ArrowRight } from "./icons";
+import LeadForm from "./LeadForm";
 
 export default function CTASection() {
   return (
@@ -9,7 +9,7 @@ export default function CTASection() {
         aria-hidden="true"
         style={{ background: "radial-gradient(ellipse 70% 60% at 50% 115%, rgba(255,122,24,0.22), transparent 60%)" }}
       />
-      <div className="relative z-10 max-w-3xl mx-auto site-gutter py-20 sm:py-28 text-center">
+      <div className="relative z-10 max-w-xl mx-auto site-gutter py-20 sm:py-28 text-center">
         <span className="eyebrow text-[var(--amber)] mb-6">See it on your own site</span>
         <h2 className="font-display text-3xl sm:text-5xl font-extrabold leading-[1.08] tracking-tight mb-5 text-balance">
           Book a 15-min demo. I’ll show it{" "}
@@ -20,14 +20,7 @@ export default function CTASection() {
           lead on your own HVAC site — then decide.
         </p>
 
-        {/* Wire this to your Cal.com booking link for discovery calls. */}
-        <a
-          href="https://cal.com/your-handle/15min"
-          className="btn-amber inline-flex items-center justify-center gap-2 px-8 py-4 font-sans font-bold text-sm sm:text-base rounded-lg hover:-translate-y-0.5 active:translate-y-0 transition-transform duration-200 group"
-        >
-          Book my 15-min demo
-          <ArrowRight className="group-hover:translate-x-1 transition-transform duration-200" />
-        </a>
+        <LeadForm />
 
         <p className="mt-6 text-sm font-sans text-[var(--invert-soft)]">
           Prefer to kick the tires first?{" "}
