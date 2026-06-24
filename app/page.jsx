@@ -11,17 +11,17 @@ const steps = [
   {
     n: "1",
     title: "Trained on your business",
-    body: "We feed it your services, pricing ballparks, service area and hours — so every answer sounds like your shop, not a generic bot.",
+    body: "We feed it your services, pricing, FAQs and tone — so every answer sounds like your company, not a generic bot.",
   },
   {
     n: "2",
     title: "Qualifies and books",
-    body: "It asks the right questions, figures out if it’s a real job, and drops the appointment straight into your calendar.",
+    body: "It asks the right questions, figures out if it’s a real lead, and drops the meeting straight into your calendar.",
   },
   {
     n: "3",
-    title: "Pings your phone instantly",
-    body: "You get a text the moment a job is booked — name, problem, time. You wake up to work already on the schedule.",
+    title: "Pings you instantly",
+    body: "You get a notification the moment a lead is captured — name, what they wanted, when. You wake up to booked calls, not missed ones.",
   },
 ];
 
@@ -49,24 +49,24 @@ export default function HomePage() {
       <section className="section-padding bg-[var(--paper)]">
         <div className="max-w-3xl mx-auto site-gutter">
           <Reveal>
-            <span className="eyebrow amber-text mb-6">The 9pm problem</span>
+            <span className="eyebrow amber-text mb-6">The 11pm problem</span>
             <h2 className="font-display text-3xl sm:text-4xl lg:text-[2.75rem] font-extrabold text-[var(--text)] leading-[1.1] tracking-tight mb-7 text-balance">
-              It’s 9:14 PM. A homeowner’s AC just died — and you’ll never know they came.
+              It’s 11:40 PM. A ready-to-buy visitor lands on your site — and no one’s there to answer.
             </h2>
             <div className="space-y-5 text-base sm:text-lg font-sans text-[var(--text-soft)] leading-relaxed">
               <p>
-                They land on your site sweating, hit a contact form, and get
-                silence. So they back out and message the next three HVAC
-                companies on Google. Whoever answers first wins the job.
+                They have one question before they’ll commit. They hit a contact
+                form and get silence. So they back out and check the next two
+                options on Google. Whoever answers first wins the sale.
               </p>
               <p className="text-[var(--text)] font-medium">
-                You paid for that click. You just lost the job — and you never
-                even saw it happen.
+                You paid for that click. You just lost the customer — and you
+                never even saw them come.
               </p>
               <p>
-                It happens every evening, every weekend, every holiday. The
-                leads don’t stop coming after 5 PM. Your phone just stops
-                answering them.
+                It happens every evening, every weekend, every holiday. Your
+                traffic doesn’t stop after 5 PM. Your website just stops
+                answering it.
               </p>
             </div>
           </Reveal>
@@ -112,8 +112,8 @@ export default function HomePage() {
             <p className="text-base sm:text-lg font-sans text-[var(--text-soft)] leading-relaxed">
               Nightshift is trained on your real business and wired directly to
               your calendar. It doesn’t just answer — it qualifies the lead and
-              puts the job on your schedule. The difference between a toy and a
-              booked job is the booking.
+              puts the meeting on your schedule. The difference between a toy and
+              a booked call is the booking.
             </p>
           </div>
           <div className="rounded-2xl border border-[var(--line)] bg-[var(--paper-2)] p-7 sm:p-8">
@@ -123,8 +123,8 @@ export default function HomePage() {
               {[
                 ["Canned, scripted replies", "Trained on your real business"],
                 ["“I didn’t understand that”", "Asks, qualifies, confirms"],
-                ["Leaves a message", "Books the job in your calendar"],
-                ["You follow up tomorrow", "Texts you the second it books"],
+                ["Leaves a message", "Books the meeting in your calendar"],
+                ["You follow up tomorrow", "Notifies you the second it books"],
               ].map(([a, b]) => (
                 <ContrastRow key={b} a={a} b={b} />
               ))}
@@ -138,7 +138,7 @@ export default function HomePage() {
         <div className="max-w-3xl mx-auto site-gutter text-center">
           <span className="eyebrow amber-text mb-6">The math</span>
           <h2 className="font-display text-3xl sm:text-4xl font-extrabold leading-[1.1] tracking-tight mb-6 text-balance">
-            One recovered job usually pays for the whole thing.
+            One recovered customer usually pays for the whole thing.
           </h2>
           <p className="text-base sm:text-lg font-sans text-[var(--invert-soft)] leading-relaxed mb-10 max-w-xl mx-auto">
             Plug in your own numbers. If even a handful of after-hours leads slip
@@ -146,8 +146,8 @@ export default function HomePage() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-left">
             {[
-              { k: "Leads lost after 5 PM", v: "8 / mo", note: "Conservative for most shops" },
-              { k: "Your average job", v: "$420", note: "Repair or install ticket" },
+              { k: "Leads lost after hours", v: "8 / mo", note: "Conservative for most sites" },
+              { k: "Your average customer", v: "$420", note: "Use your own deal size" },
               { k: "Recovered if you catch half", v: "$1,680", note: "Every single month" },
             ].map((c) => (
               <div key={c.k} className="rounded-2xl border border-[var(--ink-line)] bg-[var(--ink-2)] p-6">

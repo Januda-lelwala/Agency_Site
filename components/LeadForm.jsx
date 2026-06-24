@@ -74,9 +74,9 @@ export default function LeadForm() {
         </div>
         <div>
           <label htmlFor="company" className="block text-xs font-sans font-semibold text-[var(--invert-soft)] mb-1.5">
-            HVAC business
+            Company
           </label>
-          <input id="company" name="company" type="text" placeholder="Smith Heating & Air" className={inputClass} />
+          <input id="company" name="company" type="text" placeholder="Acme Inc." className={inputClass} />
         </div>
       </div>
 
@@ -85,7 +85,7 @@ export default function LeadForm() {
           <label htmlFor="email" className="block text-xs font-sans font-semibold text-[var(--invert-soft)] mb-1.5">
             Email *
           </label>
-          <input id="email" name="email" type="email" required placeholder="jane@smithhvac.com" className={inputClass} />
+          <input id="email" name="email" type="email" required placeholder="jane@acme.com" className={inputClass} />
         </div>
         <div>
           <label htmlFor="phone" className="block text-xs font-sans font-semibold text-[var(--invert-soft)] mb-1.5">
@@ -103,7 +103,7 @@ export default function LeadForm() {
           id="message"
           name="message"
           rows={3}
-          placeholder="e.g. We get most calls after 6pm and miss a ton on weekends."
+          placeholder="e.g. We get a lot of after-hours traffic and miss leads overnight."
           className={`${inputClass} resize-none`}
         />
       </div>

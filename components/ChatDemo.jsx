@@ -17,25 +17,27 @@ import { Send } from "./icons";
  */
 
 const SCRIPT = [
-  { role: "bot", text: "Hey 👋 I’m the Nightshift assistant — the same one I’d put on your HVAC company’s site. Ask me anything, or just watch me book you a demo." },
+  { role: "bot", text: "Hey 👋 I’m a Nightshift assistant — the same kind we’d build for your website. Ask me anything, or just watch me book you a demo." },
+  { role: "user", text: "What exactly do you build?" },
+  { role: "bot", text: "A custom AI chatbot trained on your business — it answers visitor questions, captures leads, and books meetings straight into your calendar. 24/7." },
   { role: "user", text: "Do I need to change my website?" },
   { role: "bot", text: "Nope — none at all. It’s one line of code on your existing site. Nothing else changes, and you’re live in a few days." },
-  { role: "user", text: "What happens at 11pm when someone’s AC dies?" },
-  { role: "bot", text: "I answer in seconds, ask the right questions, and book the visit straight into your calendar — then text you the details. The lead never bounces to a competitor." },
+  { role: "user", text: "What happens when someone visits at midnight?" },
+  { role: "bot", text: "I greet them, answer their questions, and book the next step before they bounce to a competitor. You wake up to booked calls instead of missed ones." },
   { role: "user", text: "Okay. How do I see it on my own site?" },
   { role: "bot", text: "Easiest is a quick 15-min demo — I’ll show it running on your website before you pay a thing. I’ve got Thu 7:10 PM or Fri 12:30 PM. Which works?" },
   { role: "user", text: "Thursday" },
-  { role: "bot", text: "Booked ✅ Thursday 7:10 PM — confirmation’s on its way to your email. That’s exactly what your after-hours customers will feel." },
+  { role: "bot", text: "Booked ✅ Thursday 7:10 PM — confirmation’s on its way to your email. That’s exactly what your visitors will feel." },
 ];
 
 function replyFor(text) {
   const t = text.toLowerCase();
   if (/(cost|price|pricing|\$|how much|expensive)/.test(t))
-    return "Most HVAC shops recover one after-hours job and it’s already paid for. I’ll walk you through your exact numbers on the demo — want a slot?";
+    return "Most businesses recover the cost with a single captured lead. I’ll walk you through your exact numbers on the demo — want a slot?";
   if (/(website|site|developer|web guy|code|wordpress)/.test(t))
     return "No website changes and no developer needed — one line of code, live in days. Want me to show you on a 15-min demo?";
   if (/(wrong|mistake|hallucinat|made up|incorrect)/.test(t))
-    return "If I’m ever unsure, I say so and hand off to you — I never guess. Happy to show you how that works live.";
+    return "If I’m ever unsure, I say so and hand off to a human — I never guess. Happy to show you how that works live.";
   return "Good question — easiest is to show you live on your own site. Want to grab a 15-min demo? I’ve got Thu 7:10 PM open.";
 }
 
