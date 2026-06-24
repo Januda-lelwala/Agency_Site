@@ -110,7 +110,7 @@ export default function HomePage() {
               isn’t this.
             </p>
             <p className="text-base sm:text-lg font-sans text-[var(--text-soft)] leading-relaxed">
-              Nightshift is trained on your real business and wired directly to
+              Bottify is trained on your real business and wired directly to
               your calendar. It doesn’t just answer — it qualifies the lead and
               puts the meeting on your schedule. The difference between a toy and
               a booked call is the booking.
@@ -119,7 +119,7 @@ export default function HomePage() {
           <div className="rounded-2xl border border-[var(--line)] bg-[var(--paper-2)] p-7 sm:p-8">
             <div className="grid grid-cols-2 gap-px bg-[var(--line)] rounded-xl overflow-hidden text-sm font-sans">
               <div className="bg-[var(--paper)] p-4 font-bold text-[var(--text-soft)]">$40 widget</div>
-              <div className="bg-[var(--paper)] p-4 font-bold text-[var(--text)]">Nightshift</div>
+              <div className="bg-[var(--paper)] p-4 font-bold text-[var(--text)]">Bottify</div>
               {[
                 ["Canned, scripted replies", "Trained on your real business"],
                 ["“I didn’t understand that”", "Asks, qualifies, confirms"],

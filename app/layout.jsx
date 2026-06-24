@@ -15,15 +15,15 @@ const sans = Inter({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://nightshift.example.com"),
+  metadataBase: new URL("https://bottify.example.com"),
   title: {
-    default: "Nightshift — AI chatbots that turn your website into a 24/7 sales rep",
-    template: "%s | Nightshift",
+    default: "Bottify — AI chatbots that turn your website into a 24/7 sales rep",
+    template: "%s | Bottify",
   },
   description:
-    "Nightshift builds custom AI chatbots for your website — they answer questions, qualify visitors, and book meetings around the clock, so you never lose another lead after hours.",
-  creator: "Nightshift",
-  publisher: "Nightshift",
+    "Bottify builds custom AI chatbots for your website — they answer questions, qualify visitors, and book meetings around the clock, so you never lose another lead after hours.",
+  creator: "Bottify",
+  publisher: "Bottify",
   keywords: [
     "AI chatbot for website",
     "website chatbot automation",
@@ -34,17 +34,17 @@ export const metadata = {
   ],
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Nightshift — AI chatbots that turn your website into a 24/7 sales rep",
+    title: "Bottify — AI chatbots that turn your website into a 24/7 sales rep",
     description:
       "Custom AI chatbots that answer, qualify, and book on your website around the clock. No code on your end. Live in days.",
-    url: "https://nightshift.example.com",
-    siteName: "Nightshift",
+    url: "https://bottify.example.com",
+    siteName: "Bottify",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Nightshift — AI chatbots that turn your website into a 24/7 sales rep",
+    title: "Bottify — AI chatbots that turn your website into a 24/7 sales rep",
     description:
       "A custom AI chatbot that captures and books leads on your website 24/7. See it work on a 15-min demo.",
   },

@@ -6,7 +6,7 @@ import { Plus } from "./icons";
 const faqs = [
   {
     q: "Do I need to change my website?",
-    a: "No. Nightshift is one line of code that drops onto your existing site. Your pages, your design, your domain — nothing changes. The assistant just shows up and starts catching leads.",
+    a: "No. Bottify is one line of code that drops onto your existing site. Your pages, your design, your domain — nothing changes. The assistant just shows up and starts catching leads.",
   },
   {
     q: "Do I need my web developer?",

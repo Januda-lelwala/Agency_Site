@@ -5,24 +5,24 @@ export default function Footer() {
   return (
     <footer className="bg-[var(--ink-3)] text-[var(--invert-soft)] border-t border-[var(--ink-line)]">
       <div className="max-w-3xl mx-auto site-gutter py-12 flex flex-col items-center text-center gap-5">
-        <Link href="/" className="flex items-center gap-2.5" aria-label="Nightshift home">
+        <Link href="/" className="flex items-center gap-2.5" aria-label="Bottify home">
           <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--amber)] text-[#1a0e02]">
             <Moon size={16} />
           </span>
           <span className="font-display font-extrabold text-[var(--invert)] text-lg tracking-tight">
-            Nightshift
+            Bottify
           </span>
         </Link>
 
         {/* A real business name, physical address and contact email are required
             for CAN-SPAM-compliant cold email. Replace the placeholders below. */}
         <address className="not-italic text-sm font-sans leading-relaxed">
-          Nightshift Automation LLC
+          Bottify Automation LLC
           <br />
           123 Main Street, Suite 200, Austin, TX 78701
           <br />
-          <a href="mailto:hello@nightshift.example.com" className="hover:text-[var(--invert)] transition-colors">
-            hello@nightshift.example.com
+          <a href="mailto:hello@bottify.example.com" className="hover:text-[var(--invert)] transition-colors">
+            hello@bottify.example.com
           </a>
         </address>
 
@@ -37,7 +37,7 @@ export default function Footer() {
         </div>
 
         <p className="text-xs font-sans text-[var(--invert-soft)]/70">
-          © {new Date().getFullYear()} Nightshift Automation LLC. All rights reserved.
+          © {new Date().getFullYear()} Bottify Automation LLC. All rights reserved.
         </p>
       </div>
     </footer>

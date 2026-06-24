@@ -9,7 +9,7 @@ import { Send } from "./icons";
  * your bot's <script> embed in place of this component — the rest of the page
  * doesn't change, only the embed source:
  *
- *     <Script src="https://your-bot-backend.com/widget.js" data-agent="nightshift" />
+ *     <Script src="https://your-bot-backend.com/widget.js" data-agent="bottify" />
  *
  * For v1 you can point that at a platform bot (Chatbase / Botpress), then swap
  * in your own backend later. Until then, this scripted preview carries the demo.
@@ -17,7 +17,7 @@ import { Send } from "./icons";
  */
 
 const SCRIPT = [
-  { role: "bot", text: "Hey 👋 I’m a Nightshift assistant — the same kind we’d build for your website. Ask me anything, or just watch me book you a demo." },
+  { role: "bot", text: "Hey 👋 I’m a Bottify assistant — the same kind we’d build for your website. Ask me anything, or just watch me book you a demo." },
   { role: "user", text: "What exactly do you build?" },
   { role: "bot", text: "A custom AI chatbot trained on your business — it answers visitor questions, captures leads, and books meetings straight into your calendar. 24/7." },
   { role: "user", text: "Do I need to change my website?" },
@@ -44,7 +44,7 @@ function replyFor(text) {
 function Avatar() {
   return (
     <span className="flex-shrink-0 h-7 w-7 rounded-full bg-[var(--amber)] text-[#1a0e02] flex items-center justify-center text-[0.7rem] font-display font-extrabold">
-      N
+      B
     </span>
   );
 }
@@ -128,7 +128,7 @@ export default function ChatDemo() {
           <div className="flex items-center gap-2.5">
             <Avatar />
             <div className="leading-tight">
-              <p className="text-sm font-sans font-bold text-[var(--invert)]">Nightshift assistant</p>
+              <p className="text-sm font-sans font-bold text-[var(--invert)]">Bottify assistant</p>
               <p className="flex items-center gap-1.5 text-[0.7rem] font-sans text-[var(--invert-soft)]">
                 <span className="live-dot" aria-hidden="true" /> Live · replies in seconds
               </p>
@@ -183,7 +183,7 @@ export default function ChatDemo() {
             onChange={(e) => setInput(e.target.value)}
             disabled={!done}
             placeholder={done ? "Ask it anything…" : "Watch it work…"}
-            aria-label="Message the Nightshift assistant"
+            aria-label="Message the Bottify assistant"
             className="flex-1 bg-transparent text-sm font-sans text-[var(--invert)] placeholder:text-[var(--invert-soft)]/70 focus:outline-none disabled:cursor-not-allowed px-2"
           />
           <button

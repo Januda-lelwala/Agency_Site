@@ -31,7 +31,7 @@ Copy `.env.example` to `.env.local` and fill in the values.
      company     text,
      phone       text,
      message     text,
-     source      text default 'nightshift-demo-request'
+     source      text default 'bottify-demo-request'
    );
 
    -- Lock the table down. Our API uses the service-role key, which bypasses
@@ -51,7 +51,7 @@ Copy `.env.example` to `.env.local` and fill in the values.
    domain** (Domains → Add Domain → add the DNS records).
 2. Create an API key → `RESEND_API_KEY`.
 3. Set `CONTACT_FROM_EMAIL` to an address on your verified domain, e.g.
-   `"Nightshift <hello@yourdomain.com>"`, and `CONTACT_TO_EMAIL` to wherever
+   `"Bottify <hello@yourdomain.com>"`, and `CONTACT_TO_EMAIL` to wherever
    you want lead notifications delivered.
 
 > Until your domain is verified you can test with `onboarding@resend.dev` as the
