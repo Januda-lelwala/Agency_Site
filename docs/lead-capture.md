@@ -81,9 +81,10 @@ hCaptcha to the form and verify the token in the API route.
 When sales picks up, add a fourth channel in `route.js` that pushes the lead
 into HubSpot/Pipedrive — the pattern is identical to the Discord webhook.
 
-## Note: this is the form path, not the bot
+## Chat assistant path
 
-This captures leads from the **booking form**. The chat widget on the page is
-still a scripted preview — once you wire in your real bot backend (Supabase
-pgvector + Claude + a `book_appointment` tool), it can write leads to the same
-`leads` table and call the same channels.
+The chat widget now calls `/api/chat` for live responses instead of replaying a
+scripted demo. When a visitor confirms a demo request in chat, the client posts
+the captured name, email, company, phone, and recent transcript to `/api/lead`,
+so Supabase, Resend, and Discord delivery still run through the same channel as
+the booking form.
