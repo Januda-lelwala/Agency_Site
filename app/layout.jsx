@@ -15,37 +15,38 @@ const sans = Inter({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://nightshift.example.com"),
+  metadataBase: new URL("https://bottify.example.com"),
   title: {
-    default: "Nightshift — Booked HVAC jobs while you sleep",
-    template: "%s | Nightshift",
+    default: "Bottify — AI chatbots that turn your website into a 24/7 sales rep",
+    template: "%s | Bottify",
   },
   description:
-    "Nightshift is an AI assistant that answers, qualifies, and books every HVAC lead that hits your site after hours — 24/7, with no changes to your website.",
-  creator: "Nightshift",
-  publisher: "Nightshift",
+    "Bottify builds custom AI chatbots for your website — they answer questions, qualify visitors, and book meetings around the clock, so you never lose another lead after hours.",
+  creator: "Bottify",
+  publisher: "Bottify",
   keywords: [
-    "HVAC lead capture",
-    "after hours answering for HVAC",
-    "HVAC booking assistant",
-    "AI receptionist for HVAC",
-    "24/7 HVAC lead booking",
+    "AI chatbot for website",
+    "website chatbot automation",
+    "AI lead capture chatbot",
+    "custom AI chatbot service",
+    "24/7 AI assistant for business",
+    "AI chatbot that books meetings",
   ],
   robots: { index: true, follow: true },
   openGraph: {
-    title: "Nightshift — Booked HVAC jobs while you sleep",
+    title: "Bottify — AI chatbots that turn your website into a 24/7 sales rep",
     description:
-      "An AI assistant that answers, qualifies, and books every HVAC lead after hours. No website changes. Live in days.",
-    url: "https://nightshift.example.com",
-    siteName: "Nightshift",
+      "Custom AI chatbots that answer, qualify, and book on your website around the clock. No code on your end. Live in days.",
+    url: "https://bottify.example.com",
+    siteName: "Bottify",
     locale: "en_US",
     type: "website",
   },
   twitter: {
     card: "summary",
-    title: "Nightshift — Booked HVAC jobs while you sleep",
+    title: "Bottify — AI chatbots that turn your website into a 24/7 sales rep",
     description:
-      "An AI assistant that books every after-hours HVAC lead. See it work on a 15-min demo.",
+      "A custom AI chatbot that captures and books leads on your website 24/7. See it work on a 15-min demo.",
   },
 };
 

@@ -31,7 +31,7 @@ Copy `.env.example` to `.env.local` and fill in the values.
      company     text,
      phone       text,
      message     text,
-     source      text default 'nightshift-demo-request'
+     source      text default 'bottify-demo-request'
    );
 
    -- Lock the table down. Our API uses the service-role key, which bypasses
@@ -51,7 +51,7 @@ Copy `.env.example` to `.env.local` and fill in the values.
    domain** (Domains → Add Domain → add the DNS records).
 2. Create an API key → `RESEND_API_KEY`.
 3. Set `CONTACT_FROM_EMAIL` to an address on your verified domain, e.g.
-   `"Nightshift <hello@yourdomain.com>"`, and `CONTACT_TO_EMAIL` to wherever
+   `"Bottify <hello@yourdomain.com>"`, and `CONTACT_TO_EMAIL` to wherever
    you want lead notifications delivered.
 
 > Until your domain is verified you can test with `onboarding@resend.dev` as the
@@ -81,9 +81,10 @@ hCaptcha to the form and verify the token in the API route.
 When sales picks up, add a fourth channel in `route.js` that pushes the lead
 into HubSpot/Pipedrive — the pattern is identical to the Discord webhook.
 
-## Note: this is the form path, not the bot
+## Chat assistant path
 
-This captures leads from the **booking form**. The chat widget on the page is
-still a scripted preview — once you wire in your real bot backend (Supabase
-pgvector + Claude + a `book_appointment` tool), it can write leads to the same
-`leads` table and call the same channels.
+The chat widget now calls `/api/chat` for live responses instead of replaying a
+scripted demo. When a visitor confirms a demo request in chat, the client posts
+the captured name, email, company, phone, and recent transcript to `/api/lead`,
+so Supabase, Resend, and Discord delivery still run through the same channel as
+the booking form.

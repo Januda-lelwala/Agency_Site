@@ -6,7 +6,7 @@ import { Plus } from "./icons";
 const faqs = [
   {
     q: "Do I need to change my website?",
-    a: "No. Nightshift is one line of code that drops onto your existing site. Your pages, your design, your domain — nothing changes. The assistant just shows up and starts catching leads.",
+    a: "No. Bottify is one line of code that drops onto your existing site. Your pages, your design, your domain — nothing changes. The assistant just shows up and starts catching leads.",
   },
   {
     q: "Do I need my web developer?",
@@ -22,7 +22,7 @@ const faqs = [
   },
   {
     q: "What does it cost?",
-    a: "Less than the jobs you’re losing after hours. Most HVAC shops recover the cost with a single booked call. We’ll go through the exact numbers on your 15-minute demo — no obligation.",
+    a: "Less than the leads you’re losing after hours. Most businesses recover the cost with a single captured customer. We’ll go through the exact numbers on your 15-minute demo — no obligation.",
   },
 ];
 

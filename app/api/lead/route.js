@@ -31,7 +31,7 @@ async function storeInSupabase(lead) {
     company: lead.company || null,
     phone: lead.phone || null,
     message: lead.message || null,
-    source: "nightshift-demo-request",
+    source: "bottify-demo-request",
   });
   if (error) throw new Error(`Supabase: ${error.message}`);
   return { ok: true };
@@ -80,7 +80,7 @@ async function notifyDiscord(lead) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
-      username: "Nightshift Leads",
+      username: "Bottify Leads",
       embeds: [
         {
           title: "🌙 New demo request",
@@ -128,13 +128,13 @@ function autoReplyHtml(lead) {
   return `
   <div style="font-family:system-ui,-apple-system,sans-serif;max-width:560px;margin:0 auto;color:#0e1626">
     <div style="background:#0b1120;padding:24px;border-radius:12px 12px 0 0">
-      <p style="margin:0;color:#fff;font-weight:800;font-size:18px">Night<span style="color:#ff7a18">shift</span></p>
+      <p style="margin:0;color:#fff;font-weight:800;font-size:18px">Bott<span style="color:#ff7a18">ify</span></p>
     </div>
     <div style="border:1px solid #e3e7f0;border-top:none;border-radius:0 0 12px 12px;padding:24px;font-size:15px;line-height:1.6">
       <p style="margin:0 0 14px">Hi ${escapeHtml(lead.name.split(" ")[0]) || "there"},</p>
       <p style="margin:0 0 14px">Thanks for the demo request — I've got it. I'll reach out shortly to lock in a 15-minute slot and show the assistant working on your own website before you pay a thing.</p>
       <p style="margin:0 0 14px">If it's easier, just reply to this email with a couple of times that work for you.</p>
-      <p style="margin:0;color:#59617a">— The Nightshift team</p>
+      <p style="margin:0;color:#59617a">— The Bottify team</p>
     </div>
   </div>`;
 }

@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 
 export const metadata = {
   title: "Privacy Policy",
-  description: "Privacy Policy for Nightshift.",
+  description: "Privacy Policy for Bottify.",
 };
 
 export default function PrivacyPage() {
@@ -12,12 +12,12 @@ export default function PrivacyPage() {
     <main className="min-h-screen flex flex-col">
       <header className="bg-[var(--ink)] border-b border-[var(--ink-line)]">
         <div className="max-w-3xl mx-auto site-gutter h-16 flex items-center">
-          <Link href="/" className="flex items-center gap-2.5" aria-label="Nightshift home">
+          <Link href="/" className="flex items-center gap-2.5" aria-label="Bottify home">
             <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--amber)] text-[#1a0e02]">
               <Moon size={16} />
             </span>
             <span className="font-display font-extrabold text-[var(--invert)] text-lg tracking-tight">
-              Nightshift
+              Bottify
             </span>
           </Link>
         </div>
@@ -41,10 +41,10 @@ export default function PrivacyPage() {
               information.
             </p>
             <p>
-              Include a clear way to reach you: Nightshift Automation LLC, 123
+              Include a clear way to reach you: Bottify Automation LLC, 123
               Main Street, Suite 200, Austin, TX 78701,{" "}
-              <a href="mailto:hello@nightshift.example.com" className="text-[var(--amber)] hover:underline underline-offset-4">
-                hello@nightshift.example.com
+              <a href="mailto:hello@bottify.example.com" className="text-[var(--amber)] hover:underline underline-offset-4">
+                hello@bottify.example.com
               </a>
               .
             </p>

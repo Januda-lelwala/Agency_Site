@@ -17,7 +17,7 @@ export default function CTASection() {
         </h2>
         <p className="text-sm sm:text-base font-sans text-[var(--invert-soft)] leading-relaxed mb-9 max-w-lg mx-auto">
           No slides, no pressure. You watch the exact assistant catch and book a
-          lead on your own HVAC site — then decide.
+          lead on your own website — then decide.
         </p>
 
         <LeadForm />

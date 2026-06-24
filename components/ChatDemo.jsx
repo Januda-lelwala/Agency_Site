@@ -3,149 +3,172 @@
 import { useEffect, useRef, useState } from "react";
 import { Send } from "./icons";
 
-/*
- * ── THE CENTERPIECE ──────────────────────────────────────────────────────
- * This is a faithful *preview* of the live assistant. To make it real, drop
- * your bot's <script> embed in place of this component — the rest of the page
- * doesn't change, only the embed source:
- *
- *     <Script src="https://your-bot-backend.com/widget.js" data-agent="nightshift" />
- *
- * For v1 you can point that at a platform bot (Chatbase / Botpress), then swap
- * in your own backend later. Until then, this scripted preview carries the demo.
- * ─────────────────────────────────────────────────────────────────────────
- */
-
-const SCRIPT = [
-  { role: "bot", text: "Hey 👋 I’m the Nightshift assistant — the same one I’d put on your HVAC company’s site. Ask me anything, or just watch me book you a demo." },
-  { role: "user", text: "Do I need to change my website?" },
-  { role: "bot", text: "Nope — none at all. It’s one line of code on your existing site. Nothing else changes, and you’re live in a few days." },
-  { role: "user", text: "What happens at 11pm when someone’s AC dies?" },
-  { role: "bot", text: "I answer in seconds, ask the right questions, and book the visit straight into your calendar — then text you the details. The lead never bounces to a competitor." },
-  { role: "user", text: "Okay. How do I see it on my own site?" },
-  { role: "bot", text: "Easiest is a quick 15-min demo — I’ll show it running on your website before you pay a thing. I’ve got Thu 7:10 PM or Fri 12:30 PM. Which works?" },
-  { role: "user", text: "Thursday" },
-  { role: "bot", text: "Booked ✅ Thursday 7:10 PM — confirmation’s on its way to your email. That’s exactly what your after-hours customers will feel." },
+const STARTER_MESSAGES = [
+  {
+    role: "bot",
+    text: "Hi, I'm Bottify's live site assistant. Ask about setup, pricing, accuracy, or integrations. If you want the 15-minute demo, I can collect your details and send the request right here.",
+  },
 ];
 
-function replyFor(text) {
-  const t = text.toLowerCase();
-  if (/(cost|price|pricing|\$|how much|expensive)/.test(t))
-    return "Most HVAC shops recover one after-hours job and it’s already paid for. I’ll walk you through your exact numbers on the demo — want a slot?";
-  if (/(website|site|developer|web guy|code|wordpress)/.test(t))
-    return "No website changes and no developer needed — one line of code, live in days. Want me to show you on a 15-min demo?";
-  if (/(wrong|mistake|hallucinat|made up|incorrect)/.test(t))
-    return "If I’m ever unsure, I say so and hand off to you — I never guess. Happy to show you how that works live.";
-  return "Good question — easiest is to show you live on your own site. Want to grab a 15-min demo? I’ve got Thu 7:10 PM open.";
-}
+const SUGGESTIONS = [
+  "What exactly do you build?",
+  "How much does it cost?",
+  "Book a demo",
+];
 
 function Avatar() {
   return (
     <span className="flex-shrink-0 h-7 w-7 rounded-full bg-[var(--amber)] text-[#1a0e02] flex items-center justify-center text-[0.7rem] font-display font-extrabold">
-      N
+      B
     </span>
   );
 }
 
+function buildLeadMessage(messages, lead) {
+  const transcript = messages
+    .slice(-10)
+    .map((msg) => `${msg.role === "bot" ? "Assistant" : "Visitor"}: ${msg.text}`)
+    .join("\n");
+
+  return [
+    lead.notes,
+    "Captured through the Bottify chat assistant.",
+    transcript ? `Recent chat:\n${transcript}` : "",
+  ]
+    .filter(Boolean)
+    .join("\n\n")
+    .slice(0, 5000);
+}
+
 export default function ChatDemo() {
-  const [shown, setShown] = useState([]);
+  const [messages, setMessages] = useState(STARTER_MESSAGES);
   const [typing, setTyping] = useState(false);
-  const [done, setDone] = useState(false);
   const [input, setInput] = useState("");
+  const [lead, setLead] = useState({});
+  const [status, setStatus] = useState("idle"); // idle | submitting | submitted | error
   const scrollRef = useRef(null);
-  const timers = useRef([]);
 
-  // Auto-play the scripted conversation on mount.
-  useEffect(() => {
-    const reduce =
-      typeof window !== "undefined" &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    if (reduce) {
-      setShown(SCRIPT);
-      setDone(true);
-      return;
-    }
-
-    let t = 600;
-    SCRIPT.forEach((msg, i) => {
-      if (msg.role === "bot") {
-        timers.current.push(setTimeout(() => setTyping(true), t));
-        t += 950;
-        timers.current.push(
-          setTimeout(() => {
-            setTyping(false);
-            setShown((s) => [...s, msg]);
-          }, t)
-        );
-        t += 700;
-      } else {
-        timers.current.push(
-          setTimeout(() => setShown((s) => [...s, msg]), t)
-        );
-        t += 850;
-      }
-    });
-    timers.current.push(setTimeout(() => setDone(true), t));
-
-    return () => timers.current.forEach(clearTimeout);
-  }, []);
-
-  // Keep the transcript scrolled to the newest message.
   useEffect(() => {
     const node = scrollRef.current;
     if (node) node.scrollTop = node.scrollHeight;
-  }, [shown, typing]);
+  }, [messages, typing]);
+
+  async function submitLead(nextMessages, nextLead) {
+    setStatus("submitting");
+
+    const res = await fetch("/api/lead", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: nextLead.name,
+        email: nextLead.email,
+        company: nextLead.company || "",
+        phone: nextLead.phone || "",
+        message: buildLeadMessage(nextMessages, nextLead),
+      }),
+    });
+
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      throw new Error(json.error || "The demo request could not be sent.");
+    }
+
+    setStatus("submitted");
+  }
+
+  async function sendMessage(rawText) {
+    const text = rawText.trim();
+    if (!text || typing || status === "submitting") return;
+
+    setInput("");
+    setStatus((current) => (current === "error" ? "idle" : current));
+
+    const nextMessages = [...messages, { role: "user", text }];
+    setMessages(nextMessages);
+    setTyping(true);
+
+    try {
+      const res = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, lead }),
+      });
+
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(json.error || "The assistant is unavailable.");
+
+      const nextLead = json.lead || lead;
+      setLead(nextLead);
+
+      if (json.action === "submit_lead") {
+        await submitLead(nextMessages, nextLead);
+      }
+
+      setMessages((current) => [
+        ...current,
+        {
+          role: "bot",
+          text:
+            json.reply ||
+            "Got it. I sent that through and the Bottify team will follow up shortly.",
+        },
+      ]);
+    } catch (err) {
+      setStatus("error");
+      setMessages((current) => [
+        ...current,
+        {
+          role: "bot",
+          text:
+            err.message ||
+            "I couldn't send that right now. Please use the form below or try again.",
+        },
+      ]);
+    } finally {
+      setTyping(false);
+    }
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
-    const text = input.trim();
-    if (!text || !done) return;
-    setInput("");
-    setShown((s) => [...s, { role: "user", text }]);
-    setTyping(true);
-    const reply = replyFor(text);
-    setTimeout(() => {
-      setTyping(false);
-      setShown((s) => [...s, { role: "bot", text: reply }]);
-    }, 1100);
+    sendMessage(input);
   }
 
   return (
     <div className="relative z-10 max-w-xl mx-auto" id="demo">
-      {/* Glow behind the card — the bot "catching a lead late at night" */}
       <div
         className="absolute -inset-6 rounded-[2rem] blur-2xl opacity-50 pointer-events-none"
         aria-hidden="true"
-        style={{ background: "radial-gradient(60% 60% at 50% 35%, rgba(255,122,24,0.28), transparent 70%)" }}
+        style={{
+          background:
+            "radial-gradient(60% 60% at 50% 35%, rgba(255,122,24,0.28), transparent 70%)",
+        }}
       />
 
       <div className="relative rounded-2xl bg-[var(--ink-2)] border border-[var(--ink-line)] shadow-[0_30px_80px_-30px_rgba(0,0,0,0.8)] overflow-hidden">
-        {/* Window bar */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--ink-line)] bg-white/[0.02]">
           <div className="flex items-center gap-2.5">
             <Avatar />
             <div className="leading-tight">
-              <p className="text-sm font-sans font-bold text-[var(--invert)]">Nightshift assistant</p>
+              <p className="text-sm font-sans font-bold text-[var(--invert)]">Bottify assistant</p>
               <p className="flex items-center gap-1.5 text-[0.7rem] font-sans text-[var(--invert-soft)]">
-                <span className="live-dot" aria-hidden="true" /> Live · replies in seconds
+                <span className="live-dot" aria-hidden="true" /> Live lead capture
               </p>
             </div>
           </div>
-          <span className="text-[0.7rem] font-sans font-medium text-[var(--invert-soft)] tabular-nums">
-            11:47 PM
+          <span className="text-[0.7rem] font-sans font-medium text-[var(--invert-soft)]">
+            {status === "submitted" ? "Sent" : status === "submitting" ? "Sending" : "Online"}
           </span>
         </div>
 
-        {/* Transcript */}
         <div
           ref={scrollRef}
           className="h-[22rem] sm:h-[24rem] overflow-y-auto px-4 py-5 flex flex-col gap-3.5 scroll-smooth"
           aria-live="polite"
         >
-          {shown.map((msg, i) => (
+          {messages.map((msg, i) => (
             <div
-              key={i}
+              key={`${msg.role}-${i}`}
               className={`msg-in flex items-end gap-2 ${msg.role === "user" ? "flex-row-reverse" : ""}`}
             >
               {msg.role === "bot" ? <Avatar /> : <span className="w-7 flex-shrink-0" aria-hidden="true" />}
@@ -173,20 +196,37 @@ export default function ChatDemo() {
           )}
         </div>
 
-        {/* Input */}
+        <div className="px-3 pb-3 flex flex-wrap gap-2">
+          {SUGGESTIONS.map((suggestion) => (
+            <button
+              key={suggestion}
+              type="button"
+              onClick={() => sendMessage(suggestion)}
+              disabled={typing || status === "submitting"}
+              className="rounded-full border border-[var(--ink-line)] bg-white/[0.04] px-3 py-1.5 text-xs font-sans font-medium text-[var(--invert-soft)] hover:border-[var(--amber)] hover:text-[var(--invert)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {suggestion}
+            </button>
+          ))}
+        </div>
+
         <form onSubmit={handleSubmit} className="flex items-center gap-2 px-3 py-3 border-t border-[var(--ink-line)] bg-white/[0.02]">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            disabled={!done}
-            placeholder={done ? "Ask it anything…" : "Watch it work…"}
-            aria-label="Message the Nightshift assistant"
+            disabled={typing || status === "submitting"}
+            placeholder={
+              status === "submitted"
+                ? "Ask another question..."
+                : "Ask a question or book a demo..."
+            }
+            aria-label="Message the Bottify assistant"
             className="flex-1 bg-transparent text-sm font-sans text-[var(--invert)] placeholder:text-[var(--invert-soft)]/70 focus:outline-none disabled:cursor-not-allowed px-2"
           />
           <button
             type="submit"
-            disabled={!done || !input.trim()}
+            disabled={typing || status === "submitting" || !input.trim()}
             aria-label="Send message"
             className="flex-shrink-0 h-9 w-9 rounded-lg btn-amber flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
           >
@@ -196,7 +236,7 @@ export default function ChatDemo() {
       </div>
 
       <p className="mt-4 text-center text-xs font-sans text-[var(--invert-soft)]">
-        This is a preview. On a 15-min demo, I’ll run it live on your own website.
+        The assistant answers live and sends confirmed demo requests through the real lead pipeline.
       </p>
     </div>
   );

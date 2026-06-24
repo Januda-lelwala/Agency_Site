@@ -59,7 +59,7 @@
     @apply py-20 sm:py-28;
   }
 
-  /* Solid amber — no gradients (trades, not tech-startup) */
+  /* Solid amber — high-visibility "on call / working" accent, no gradients */
   .btn-amber {
     background-color: var(--amber);
     color: #1a0e02;

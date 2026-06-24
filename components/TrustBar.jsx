@@ -2,7 +2,7 @@ import { Check } from "./icons";
 
 /* Honest, factual reassurance — not fake testimonials. The working demo above
    is the real proof; this just answers the instant objections. */
-const points = ["Built for HVAC", "No website changes", "Live in days", "You keep every lead"];
+const points = ["Works on any website", "No website changes", "Live in days", "You keep every lead"];
 
 export default function TrustBar() {
   return (
