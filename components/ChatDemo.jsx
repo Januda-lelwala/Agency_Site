@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Send } from "./icons";
+import { collectPageContext, executeActions } from "./chatContext";
 
 const STARTER_MESSAGES = [
   {
     role: "bot",
-    text: "Hi, I'm Bottify's live site assistant. Ask about setup, pricing, accuracy, or integrations. If you want the 15-minute demo, I can collect your details and send the request right here.",
+    text: "Hi, I'm Bottify's live site assistant. Ask about setup, pricing, accuracy, or integrations — or tell me you'd like the free 15-minute demo and I'll get you booked.",
   },
 ];
 
@@ -24,28 +25,12 @@ function Avatar() {
   );
 }
 
-function buildLeadMessage(messages, lead) {
-  const transcript = messages
-    .slice(-10)
-    .map((msg) => `${msg.role === "bot" ? "Assistant" : "Visitor"}: ${msg.text}`)
-    .join("\n");
-
-  return [
-    lead.notes,
-    "Captured through the Bottify chat assistant.",
-    transcript ? `Recent chat:\n${transcript}` : "",
-  ]
-    .filter(Boolean)
-    .join("\n\n")
-    .slice(0, 5000);
-}
-
 export default function ChatDemo() {
   const [messages, setMessages] = useState(STARTER_MESSAGES);
   const [typing, setTyping] = useState(false);
   const [input, setInput] = useState("");
-  const [lead, setLead] = useState({});
-  const [status, setStatus] = useState("idle"); // idle | submitting | submitted | error
+  const [error, setError] = useState(false);
+  const conversationId = useRef(null);
   const scrollRef = useRef(null);
 
   useEffect(() => {
@@ -53,75 +38,46 @@ export default function ChatDemo() {
     if (node) node.scrollTop = node.scrollHeight;
   }, [messages, typing]);
 
-  async function submitLead(nextMessages, nextLead) {
-    setStatus("submitting");
-
-    const res = await fetch("/api/lead", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name: nextLead.name,
-        email: nextLead.email,
-        company: nextLead.company || "",
-        phone: nextLead.phone || "",
-        message: buildLeadMessage(nextMessages, nextLead),
-      }),
-    });
-
-    const json = await res.json().catch(() => ({}));
-    if (!res.ok) {
-      throw new Error(json.error || "The demo request could not be sent.");
-    }
-
-    setStatus("submitted");
-  }
-
   async function sendMessage(rawText) {
     const text = rawText.trim();
-    if (!text || typing || status === "submitting") return;
+    if (!text || typing) return;
 
     setInput("");
-    setStatus((current) => (current === "error" ? "idle" : current));
-
-    const nextMessages = [...messages, { role: "user", text }];
-    setMessages(nextMessages);
+    setError(false);
+    setMessages((current) => [...current, { role: "user", text }]);
     setTyping(true);
 
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text, lead }),
+        body: JSON.stringify({
+          message: text,
+          conversationId: conversationId.current,
+          pageUrl: window.location.href,
+          pageContext: collectPageContext(),
+        }),
       });
 
       const json = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(json.error || "The assistant is unavailable.");
 
-      const nextLead = json.lead || lead;
-      setLead(nextLead);
-
-      if (json.action === "submit_lead") {
-        await submitLead(nextMessages, nextLead);
-      }
+      if (json.conversationId) conversationId.current = json.conversationId;
 
       setMessages((current) => [
         ...current,
-        {
-          role: "bot",
-          text:
-            json.reply ||
-            "Got it. I sent that through and the Bottify team will follow up shortly.",
-        },
+        { role: "bot", text: json.reply || "I could not respond just now." },
       ]);
+      executeActions(json.actions);
     } catch (err) {
-      setStatus("error");
+      setError(true);
       setMessages((current) => [
         ...current,
         {
           role: "bot",
           text:
             err.message ||
-            "I couldn't send that right now. Please use the form below or try again.",
+            "I couldn't reach the assistant right now. Please use the form below or try again.",
         },
       ]);
     } finally {
@@ -152,12 +108,12 @@ export default function ChatDemo() {
             <div className="leading-tight">
               <p className="text-sm font-sans font-bold text-[var(--invert)]">Bottify assistant</p>
               <p className="flex items-center gap-1.5 text-[0.7rem] font-sans text-[var(--invert-soft)]">
-                <span className="live-dot" aria-hidden="true" /> Live lead capture
+                <span className="live-dot" aria-hidden="true" /> Live AI assistant
               </p>
             </div>
           </div>
           <span className="text-[0.7rem] font-sans font-medium text-[var(--invert-soft)]">
-            {status === "submitted" ? "Sent" : status === "submitting" ? "Sending" : "Online"}
+            {error ? "Reconnecting" : typing ? "Typing" : "Online"}
           </span>
         </div>
 
@@ -173,7 +129,7 @@ export default function ChatDemo() {
             >
               {msg.role === "bot" ? <Avatar /> : <span className="w-7 flex-shrink-0" aria-hidden="true" />}
               <div
-                className={`max-w-[80%] px-3.5 py-2.5 text-sm font-sans leading-relaxed rounded-2xl ${
+                className={`max-w-[80%] px-3.5 py-2.5 text-sm font-sans leading-relaxed rounded-2xl whitespace-pre-wrap ${
                   msg.role === "bot"
                     ? "bg-white/[0.06] text-[var(--invert)] rounded-bl-md"
                     : "bg-[var(--amber)] text-[#1a0e02] font-medium rounded-br-md"
@@ -202,7 +158,7 @@ export default function ChatDemo() {
               key={suggestion}
               type="button"
               onClick={() => sendMessage(suggestion)}
-              disabled={typing || status === "submitting"}
+              disabled={typing}
               className="rounded-full border border-[var(--ink-line)] bg-white/[0.04] px-3 py-1.5 text-xs font-sans font-medium text-[var(--invert-soft)] hover:border-[var(--amber)] hover:text-[var(--invert)] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {suggestion}
@@ -215,18 +171,14 @@ export default function ChatDemo() {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            disabled={typing || status === "submitting"}
-            placeholder={
-              status === "submitted"
-                ? "Ask another question..."
-                : "Ask a question or book a demo..."
-            }
+            disabled={typing}
+            placeholder="Ask a question or book a demo..."
             aria-label="Message the Bottify assistant"
             className="flex-1 bg-transparent text-sm font-sans text-[var(--invert)] placeholder:text-[var(--invert-soft)]/70 focus:outline-none disabled:cursor-not-allowed px-2"
           />
           <button
             type="submit"
-            disabled={typing || status === "submitting" || !input.trim()}
+            disabled={typing || !input.trim()}
             aria-label="Send message"
             className="flex-shrink-0 h-9 w-9 rounded-lg btn-amber flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed transition-opacity"
           >
@@ -236,7 +188,7 @@ export default function ChatDemo() {
       </div>
 
       <p className="mt-4 text-center text-xs font-sans text-[var(--invert-soft)]">
-        The assistant answers live and sends confirmed demo requests through the real lead pipeline.
+        This is the real assistant answering live — the same one that goes on your site.
       </p>
     </div>
   );
